@@ -4,9 +4,9 @@ Gem::Specification.new do |s|
   s.name        = "permalink"
   s.version     = Permalink::Version::STRING
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Nando Vieira"]
-  s.email       = ["fnando.vieira@gmail.com"]
-  s.homepage    = "http://rubygems.org/gems/permalink"
+  s.authors     = ["Nando Vieira", "Jonathan Arp"]
+  s.email       = ["fnando.vieira@gmail.com", "webgroup@nd.edu"]
+  s.homepage    = "https://github.com/ndwebgroup/permalink"
   s.summary     = "Generate permalink attributes on ActiveModel/ActiveRecord"
   s.description = s.summary
   s.license     = "MIT"
