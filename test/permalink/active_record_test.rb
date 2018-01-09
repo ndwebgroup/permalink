@@ -17,12 +17,20 @@ class ActiveRecordTest < Minitest::Test
   end
 
 
-  test "uses a dictionary to loop up options for specific classes" do
-    assert model.respond_to?(:permalink_options)
+  test "uses a dictionary to look up options for specific classes" do
     assert model.permalink_options.has_key?('Post')
-
-    assert user_model.respond_to?(:permalink_options)
     assert user_model.permalink_options.has_key?('User')
+  end
+
+  test "gets different options for different models" do
+    model.permalink :name, force: true, separator: '_'
+    user_model.permalink :name, unique: true, separator: '-'
+
+    record = model.create(title: "Some nice Title")
+    record2 = user_model.create(name: "Puma Jackson")
+
+    assert 'some-nice-title', record.permalink
+    assert 'puma_jackson', record2.permalink
   end
 
   test "uses default options" do
