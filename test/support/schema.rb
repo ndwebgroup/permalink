@@ -5,5 +5,6 @@ ActiveRecord::Schema.define(:version => 0) do
   end
 
   create_table :users do |t|
+    t.string :name, :permalink, :slug
   end
 end

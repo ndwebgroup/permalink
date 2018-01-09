@@ -2,14 +2,27 @@ require "test_helper"
 
 class ActiveRecordTest < Minitest::Test
   let(:model) { Post }
+  let(:user_model) { User }
 
   setup do
     model.delete_all
     model.permalink :title
+
+    user_model.delete_all
+    user_model.permalink :name, unique: true
   end
 
   test "responds to options" do
     assert model.respond_to?(:permalink_options)
+  end
+
+
+  test "uses a dictionary to loop up options for specific classes" do
+    assert model.respond_to?(:permalink_options)
+    assert model.permalink_options.has_key?('Post')
+
+    assert user_model.respond_to?(:permalink_options)
+    assert user_model.permalink_options.has_key?('User')
   end
 
   test "uses default options" do
@@ -131,10 +144,11 @@ class ActiveRecordTest < Minitest::Test
   test "forces permalink and keep unique" do
     model.permalink :title, force: true, unique: true
 
+
     record = model.create(title: "Some nice post")
 
     record.update_attributes title: "Awesome post"
-    assert_equal "awesome-post", record.permalink
+      assert_equal "awesome-post", record.permalink
 
     record = model.create(title: "Awesome post")
     assert_equal "awesome-post-2", record.permalink
