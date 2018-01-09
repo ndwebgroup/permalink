@@ -25,7 +25,8 @@ module Permalink
           normalizations: Permalink::DEFAULT_NORMALIZATIONS
         })
 
-
+        puts "\n\n********************************"
+        puts "Make permalink magic for #{self.to_s} with options: #{options}"
         self.permalink_options = {} unless self.permalink_options.present?
 
         set_permalink_options({
