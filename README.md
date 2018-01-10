@@ -1,19 +1,13 @@
 # Permalink
 
-[![Code Climate](https://codeclimate.com/github/fnando/permalink.png)](https://codeclimate.com/github/fnando/permalink)
-[![Build Status](https://travis-ci.org/fnando/permalink.svg)](https://travis-ci.org/fnando/permalink)
-[![Gem](https://img.shields.io/gem/v/permalink.svg)](https://rubygems.org/gems/permalink)
-[![Gem](https://img.shields.io/gem/dt/permalink.svg)](https://rubygems.org/gems/permalink)
-
-
 ## Note About the Version
 
 This is a fork of the permalink gem. What has been changed?
 
-- permalink options is no longer just a hash of key value options. They are a hash with the object that is being permalinked. Those keys contain the hash of options
-- the "to_param" option defaults to ID as vanilla Rails does.
+- Permalink options class attribute is no longer just a hash of key/value options. They are a hash with the object that is being permalinked. Those keys contain the hash of options
+- The "to_param" option defaults to ID as vanilla Rails does.
 
-The reason behind these changes is that if you Rails App is configured to eager load your classes, the permalink options overwrite itself as each class is loaded that uses it. This is a problem for us The options are stored in a class attribute within ActiveRecord and therefore is shared by all objects implementing it.
+The reason behind these changes is that if your Rails App is configured to eager load your classes, the permalink options overwrite themselves as each class that uses it is loaded. This is a problem for us. The options are stored in a class attribute within ActiveRecord and therefore is shared by all objects implementing it.
 
 With this update, you can eager load all your classes as well as use permalink with different options for different classes.
 
