@@ -4,7 +4,7 @@
 
 This is a fork of the permalink gem. What has been changed?
 
-- Permalink options class attribute is no longer just a hash of key/value options. They are a hash with the object that is being permalinked. Those keys contain the hash of options
+- Permalink options class attribute is no longer just a hash of key/value options. It is a hash with the Class name being load as the key. That key will then contain the hash of options for that specific class. 
 - The "to_param" option defaults to ID as vanilla Rails does.
 
 The reason behind these changes is that if your Rails App is configured to eager load your classes, the permalink options overwrite themselves as each class that uses it is loaded. This is a problem for us. The options are stored in a class attribute within ActiveRecord and therefore is shared by all objects implementing it.
