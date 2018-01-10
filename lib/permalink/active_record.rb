@@ -17,17 +17,13 @@ module Permalink
         include InstanceMethods
 
         options = options.reverse_merge({
-          to_param: [:id, :permalink],
+          to_param: [:id],
           to: :permalink,
           unique: false,
           force: false,
           separator: "-",
           normalizations: Permalink::DEFAULT_NORMALIZATIONS
         })
-
-        puts "\n\n********************************"
-        puts "Make permalink magic for #{self.to_s} with options: #{options}"
-        self.permalink_options = {} unless self.permalink_options.present?
 
         set_permalink_options({
           from_column_name: from_column,
@@ -46,10 +42,9 @@ module Permalink
       end
 
       def set_permalink_options(options)
-
-          model_name = self.to_s
-          self.permalink_options = {} unless self.permalink_options
-          self.permalink_options[model_name] = options
+        model_name = self.to_s.gsub('::', '_').downcase
+        self.permalink_options = {} unless self.permalink_options
+        self.permalink_options[model_name] = options
       end
 
     end
@@ -57,9 +52,13 @@ module Permalink
     module InstanceMethods
 
       def get_permalink_options
-        model_name = self.class.to_s
-        return self.permalink_options[model_name]
-        #return self.permalink_options
+        model_name = self.class.to_s.gsub('::', '_').downcase
+        begin
+          return self.permalink_options[model_name]
+        rescue
+          puts "cannot find options for #{model_name}"
+          return self.permalink_options
+        end
       end
 
 

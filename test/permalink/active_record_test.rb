@@ -6,10 +6,10 @@ class ActiveRecordTest < Minitest::Test
 
   setup do
     model.delete_all
-    model.permalink :title
+    model.permalink :title, to_param: [:id, :permalink]
 
     user_model.delete_all
-    user_model.permalink :name, unique: true
+    user_model.permalink :name, unique: true, to_param: [:id, :permalink]
   end
 
   test "responds to options" do
@@ -18,8 +18,14 @@ class ActiveRecordTest < Minitest::Test
 
 
   test "uses a dictionary to look up options for specific classes" do
-    assert model.permalink_options.has_key?('Post')
-    assert user_model.permalink_options.has_key?('User')
+    assert model.permalink_options.has_key?('post')
+    assert user_model.permalink_options.has_key?('user')
+  end
+
+  test "enters a namespaced object into dictionary" do
+    admin_user = Admin::User
+    admin_user.permalink :name
+    assert admin_user.permalink_options.has_key?('admin_user')
   end
 
   test "gets different options for different models" do
@@ -172,21 +178,21 @@ class ActiveRecordTest < Minitest::Test
   end
 
   test "overrides to_param method" do
-    model.permalink :title
+    model.permalink :title, to_param: [:id, :permalink]
 
     record = model.create(title: "Some nice post")
     assert_equal "#{record.id}-some-nice-post", record.to_param
   end
 
   test "uses custom separator" do
-    model.permalink :title, separator: "_"
+    model.permalink :title, separator: "_", to_param: [:id, :permalink]
     record = model.create(title: "Some nice post")
 
     assert_equal "#{record.id}_some_nice_post", record.to_param
   end
 
   test "uses custom normalization" do
-    model.permalink :title, normalizations: [->(input, options) { input.to_s.reverse }]
+    model.permalink :title, normalizations: [->(input, options) { input.to_s.reverse }], to_param: [:id, :permalink]
     record = model.create(title: "Some nice post")
 
     assert_equal "Some nice post".reverse, record.permalink
